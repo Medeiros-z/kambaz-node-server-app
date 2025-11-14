@@ -1,0 +1,5 @@
+const module = {
+    id: "one", name: "module1",
+    description: "Working with Express.js",
+    course: "101",
+};
