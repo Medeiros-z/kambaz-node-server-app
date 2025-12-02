@@ -1,4 +1,5 @@
 import Database from "../Database/index.js";
+import { v4 as uuidv4 } from "uuid";
 
 export function findAssignmentsForCourse(courseId) {
     const { assignments } = Database;
@@ -6,51 +7,26 @@ export function findAssignmentsForCourse(courseId) {
 }
 
 export function createAssignment(assignment) {
-    const newAssignment = { ...assignment, __id: uuidv4() };
-    Database.assignments = [...Database.assignments, newAssignment];
+    const newAssignment = { ...assignment, _id: uuidv4() };
+    //Database.assignments = [...Database.assignments, newAssignment];
+    Database.assignments.push(newAssignment);
     return newAssignment;
 }
 
 export function deleteAssignment(assignmentId) {
-    const { assingments } = Database;
-    Database.assignments = assingments.filter((assignment) => assignment.__id !== moduleId);
+    const { assignments } = Database;
+    Database.assignments = assignments.filter((assignment) => assignment._id !== assignmentId);
 }
 
-export function updateAssignment(assingmentId, assignmentUpdates) {
+export function updateAssignment(assignmentId, assignmentUpdates) {
     const { assignments } = Database;
-    const assignment = assignments.find((assignment) => assignment.__id === assignmentId);
+    console.log("Looking for ID:", assignmentId);
+    console.log("Available IDs:", assignments.map(a => a._id));
+    const assignment = assignments.find((assignment) => assignment._id === assignmentId);
+    if (!assignment) {
+        console.log("Assignment not found!");
+        return null;
+    }
     Object.assign(assignment, assignmentUpdates);
     return assignment;
 }
-
-// let { assignments } = db;
-
-// export const findAssignmentsForCourse = (courseId) =>
-//   assignments.filter(a => a.course === courseId);
-
-// export const findAssignmentById = (assignmentId) =>
-//   assignments.find(a => a._id === assignmentId);
-
-// export const createAssignment = (assignment) => {
-//   const newAssignment = {
-//     ...assignment,
-//     _id: Date.now().toString(),
-//   };
-//   assignments = [...assignments, newAssignment];
-//   db.assignments = assignments;
-//   return newAssignment;
-// };
-
-// export const updateAssignment = (assignmentId, updates) => {
-//   assignments = assignments.map(a =>
-//     a._id === assignmentId ? { ...a, ...updates } : a
-//   );
-//   db.assignments = assignments;
-//   return db.assignments.find(a => a._id === assignmentId);
-// };
-
-// export const deleteAssignment = (assignmentId) => {
-//   assignments = assignments.filter(a => a._id !== assignmentId);
-//   db.assignments = assignments;
-//   return assignments;
-// };
