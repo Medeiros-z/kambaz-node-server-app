@@ -45,4 +45,18 @@ export default function QuizRoutes(app) {
     const quiz = await quizzesDao.findQuizById(quizId);
     res.send(quiz);
   });
+
+  // Publish / unpublish a quiz
+  app.patch("/api/quizzes/:quizId/publish", async (req, res) => {
+    const { quizId } = req.params;
+    const { isPublished } = req.body;
+
+    try {
+      const status = await quizzesDao.setQuizPublishState(quizId, isPublished);
+      res.send(status);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: "Failed to update publish state" });
+    }
+  });
 }

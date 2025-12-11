@@ -19,10 +19,15 @@ export function deleteQuiz(quizId) {
 
 // Update a quiz
 export function updateQuiz(quizId, quizUpdates) {
-  return model.updateOne({ _id: quizId }, quizUpdates);
+  return model.findByIdAndUpdate(quizId, quizUpdates, { new: true });
 }
 
 // Optional — find a single quiz (for the details page)
 export function findQuizById(quizId) {
   return model.findById(quizId);
+}
+
+// Set the publish state of a quiz
+export function setQuizPublishState(quizId, isPublished) {
+  return model.updateOne({ _id: quizId }, { isPublished });
 }
